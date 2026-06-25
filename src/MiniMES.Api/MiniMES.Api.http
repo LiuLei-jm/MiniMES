@@ -1,6 +1,10 @@
 @MiniMES.Api_HostAddress = http://localhost:5281
 
-GET {{MiniMES.Api_HostAddress}}/weatherforecast/
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJiZjk1NWFiNy03OTM1LTQyNTItYjM1ZS0yYWI2MjgxZWE1NTQiLCJ1bmlxdWVfbmFtZSI6ImFkbWluIiwidXNlcklkIjoiYmY5NTVhYjctNzkzNS00MjUyLWIzNWUtMmFiNjI4MWVhNTU0IiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiQWRtaW4iLCJleHAiOjE3ODIzNzcwMzgsImlzcyI6Ik1pbmlNRVMiLCJhdWQiOiJNaW5pTUVTQ2xpZW50In0.UPshEmFM26FjIS3xGiX_tKOGbX1ErrqjKX4WvHZLK3Q
+
+GET {{MiniMES.Api_HostAddress}}/api/users/profile
+Authorization: Bearer {{token}}
 Accept: application/json
+
 
 ###
