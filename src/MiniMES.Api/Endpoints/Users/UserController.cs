@@ -2,10 +2,13 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MiniMES.Application.Features.Auth.Login;
-using MiniMES.Application.Features.Users.Commands.CreateUser;
+using MiniMES.Application.Features.Users.CreateUser;
+using HttpGetAttribute = Microsoft.AspNetCore.Mvc.HttpGetAttribute;
+using HttpPostAttribute = Microsoft.AspNetCore.Mvc.HttpPostAttribute;
 
 namespace MiniMES.Api.Endpoints.Users;
 
+[Obsolete("Please use endpoints.")]
 [ApiController]
 [Route("api/users")]
 public class UserController : ControllerBase
@@ -16,7 +19,7 @@ public class UserController : ControllerBase
         _sender = sender;
     }
     [HttpPost]
-    public async Task<IActionResult> Create(CreateUserCommand command)
+    public async Task<IActionResult> Create(Command command)
     {
         var id = await _sender.Send(command);
         return Ok(id);

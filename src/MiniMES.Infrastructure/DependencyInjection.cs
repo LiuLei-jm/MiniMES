@@ -1,17 +1,12 @@
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
+using MiniMES.Application.Common.Interfaces;
 using MiniMES.Application.Common.Security;
-using MiniMES.Domain.Interfaces;
 using MiniMES.Infrastructure.Identity;
 using MiniMES.Infrastructure.Persistence;
-using MiniMES.Infrastructure.Repositories;
 using MiniMES.Infrastructure.Security;
-using Microsoft.AspNetCore.Http;
 
-namespace MiniMES.Infrastructure.DependencyInjection;
+namespace MiniMES.Infrastructure;
 
-public static class InfrastructureServiceCollection
+public static class DependencyInjection
 {
     public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
@@ -19,7 +14,7 @@ public static class InfrastructureServiceCollection
         {
             options.UseSqlServer(configuration.GetConnectionString("Default"));
         });
-        services.AddScoped<IUserRepository, UserRepository>();
+        services.AddScoped<IApplicationDbContext>(sp => sp.GetRequiredService<AppDbContext>());
         services.AddSingleton<IPasswordHasher, PasswordHasher>();
         services.AddSingleton<IJwtTokenGenerator, JwtTokenGenerator>();
         services.AddSingleton(provider =>

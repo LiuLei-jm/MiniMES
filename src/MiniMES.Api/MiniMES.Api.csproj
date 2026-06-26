@@ -7,6 +7,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="FastEndpoints" Version="8.2.0" />
+    <PackageReference Include="FastEndpoints.Swagger" Version="8.2.0" />
+    <PackageReference Include="Mapster" Version="10.0.9" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.28" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.28" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.28">
@@ -18,8 +21,15 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\MiniMES.Contracts\MiniMES.Contracts.csproj" />
     <ProjectReference Include="..\MiniMES.Infrastructure\MiniMES.Infrastructure.csproj" />
     <ProjectReference Include="..\MiniMES.Application\MiniMES.Application.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Common\Mapping\" />
+    <Folder Include="Common\Errors\" />
+    <Folder Include="Common\Extensions\" />
   </ItemGroup>
 
 </Project>

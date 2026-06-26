@@ -1,10 +1,10 @@
-using Microsoft.EntityFrameworkCore;
 using MiniMES.Domain.Entities;
 using MiniMES.Domain.Interfaces;
 using MiniMES.Infrastructure.Persistence;
 
 namespace MiniMES.Infrastructure.Repositories;
 
+[Obsolete("Please user IApplicationDbContext instead")]
 public class UserRepository : IUserRepository
 {
     private readonly AppDbContext _context;

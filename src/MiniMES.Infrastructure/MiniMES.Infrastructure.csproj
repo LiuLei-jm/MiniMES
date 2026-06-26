@@ -3,6 +3,7 @@
   <ItemGroup>
     <ProjectReference Include="..\MiniMES.Application\MiniMES.Application.csproj" />
     <ProjectReference Include="..\MiniMES.Domain\MiniMES.Domain.csproj" />
+    <ProjectReference Include="..\MiniMES.SharedKernel\MiniMES.SharedKernel.csproj" />
   </ItemGroup>
 
   <ItemGroup>

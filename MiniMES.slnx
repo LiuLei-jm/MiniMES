@@ -2,7 +2,10 @@
   <Folder Name="/src/">
     <Project Path="src/MiniMES.Api/MiniMES.Api.csproj" />
     <Project Path="src/MiniMES.Application/MiniMES.Application.csproj" />
+    <Project Path="src/MiniMES.ArchitectureTests/MiniMES.ArchitectureTests.csproj" />
+    <Project Path="src/MiniMES.Contracts/MiniMES.Contracts.csproj" />
     <Project Path="src/MiniMES.Domain/MiniMES.Domain.csproj" />
     <Project Path="src/MiniMES.Infrastructure/MiniMES.Infrastructure.csproj" />
+    <Project Path="src/MiniMES.SharedKernel/MiniMES.SharedKernel.csproj" />
   </Folder>
 </Solution>

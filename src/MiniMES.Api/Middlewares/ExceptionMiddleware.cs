@@ -1,8 +1,8 @@
-using MiniMES.Application.Common.Results;
+using MiniMES.Application.Common.Models;
 using System.Net;
 using System.Text.Json;
 
-namespace MiniMES.Api.Middleware;
+namespace MiniMES.Api.Middlewares;
 
 public class ExceptionMiddleware
 {
@@ -17,11 +17,11 @@ public class ExceptionMiddleware
         {
             await _next(context);
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
             context.Response.ContentType = "application/json";
             context.Response.StatusCode = (int)HttpStatusCode.OK;
-            var result = Result<string>.Failure(ex.Message);
+            var result = Result<string>.Failure(new ("ExceptionMiddleware",ex.Message));
             await context.Response.WriteAsync(JsonSerializer.Serialize(result));
         }
     }

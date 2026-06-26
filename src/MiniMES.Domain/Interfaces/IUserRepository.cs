@@ -2,6 +2,7 @@ using MiniMES.Domain.Entities;
 
 namespace MiniMES.Domain.Interfaces;
 
+[Obsolete("Please use IApplicationDbContext instead.")]
 public interface IUserRepository
 {
     Task<User?> GetByIdAsync(Guid id);

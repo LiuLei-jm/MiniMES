@@ -4,10 +4,17 @@
     <PackageReference Include="FluentValidation" Version="12.1.1" />
     <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="12.1.1" />
     <PackageReference Include="MediatR" Version="12.4.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.28" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\MiniMES.Contracts\MiniMES.Contracts.csproj" />
     <ProjectReference Include="..\MiniMES.Domain\MiniMES.Domain.csproj" />
+    <ProjectReference Include="..\MiniMES.SharedKernel\MiniMES.SharedKernel.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Common\Exceptions\" />
   </ItemGroup>
 
   <PropertyGroup>

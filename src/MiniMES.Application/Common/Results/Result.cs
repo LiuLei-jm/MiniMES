@@ -1,5 +1,6 @@
 namespace MiniMES.Application.Common.Results;
 
+[Obsolete("Please use new result")]
 public class Result<T>
 {
     public bool IsSuccess { get; set; }
