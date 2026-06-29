@@ -22,8 +22,7 @@ public sealed class CreateUserEndpoint : Endpoint<Request, Response>
         var result = await _sender.Send(req.ToCommand(), ct);
         if (result.IsFailure)
         {
-            await Send.ErrorsAsync();
-            return;
+            throw new Exception(result.Error.Message);
         }
         await Send.OkAsync(new Response
         {

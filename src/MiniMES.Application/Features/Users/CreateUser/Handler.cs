@@ -18,6 +18,7 @@ public class Handler : IRequestHandler<Command, Result<Guid>>
 
     public async Task<Result<Guid>> Handle(Command request, CancellationToken cancellationToken)
     {
+        Console.WriteLine("HANDLER EXECUTED");
         var exist = await _db.Users.FirstOrDefaultAsync(u => u.UserName == request.UserName, cancellationToken);
 
         if (exist != null) return Result<Guid>.Failure(UserErrors.UserAlreadyExists);

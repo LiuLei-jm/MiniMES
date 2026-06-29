@@ -1,7 +1,6 @@
 ﻿using MiniMES.Application.Common.Interfaces;
 using MiniMES.Application.Common.Models;
 using MiniMES.Application.Common.Security;
-using MiniMES.Domain.Interfaces;
 
 namespace MiniMES.Application.Features.Auth.Login;
 

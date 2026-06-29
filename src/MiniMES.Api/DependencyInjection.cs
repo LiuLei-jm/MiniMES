@@ -1,4 +1,6 @@
-﻿namespace MiniMES.Api;
+﻿using MiniMES.Api.Common.Exceptions;
+
+namespace MiniMES.Api;
 
 public static class DependencyInjection
 {
@@ -6,19 +8,13 @@ public static class DependencyInjection
     {
         var jwt = configuration.GetSection("Jwt");
         services.AddFastEndpoints()
-                        .AddSwaggerGen();
-
-        services.AddMediatR(cfg =>
-        {
-            cfg.RegisterServicesFromAssembly(typeof(MiniMES.Application.AssemblyReference).Assembly);
-        });
-        services.AddValidatorsFromAssembly(typeof(MiniMES.Application.AssemblyReference).Assembly
-            );
-
+            .AddSwaggerGen();
+        services.AddExceptionHandler<GlobalExceptionHandler>();
+        services.AddProblemDetails();
         services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             .AddJwtBearer(options =>
             {
-                options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
+                options.TokenValidationParameters = new TokenValidationParameters
                 {
                     ValidateIssuer = true,
                     ValidateAudience = true,

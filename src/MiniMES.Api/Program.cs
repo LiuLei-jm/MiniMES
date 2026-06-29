@@ -1,5 +1,5 @@
 using MiniMES.Api;
-using MiniMES.Api.Middlewares;
+using MiniMES.Api.Common.Exceptions;
 using MiniMES.Application;
 using MiniMES.Application.Common.Security;
 using MiniMES.Infrastructure;
@@ -19,11 +19,11 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-app.UseFastEndpoints();
-
-app.UseMiddleware<ExceptionMiddleware>();
+app.UseExceptionHandler();
+app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
+app.UseFastEndpoints();
 
 using (var scope = app.Services.CreateScope())
 {
