@@ -1,12 +1,17 @@
 using MiniMES.Application.Common.Interfaces;
 using MiniMES.Domain.Entities;
+using MiniMES.Infrastructure.Persistence.Interceptors;
 
 namespace MiniMES.Infrastructure.Persistence;
 
 public class AppDbContext : DbContext, IApplicationDbContext
 {
-    public AppDbContext(DbContextOptions<AppDbContext> options)
-        : base(options) { }
+    private readonly AppDbCommandInterceptor _interceptor;
+    public AppDbContext(DbContextOptions<AppDbContext> options, AppDbCommandInterceptor interceptor)
+        : base(options)
+    {
+        _interceptor = interceptor;
+    }
 
     public DbSet<User> Users => Set<User>();
     public DbSet<Role> Roles => Set<Role>();
@@ -21,5 +26,9 @@ public class AppDbContext : DbContext, IApplicationDbContext
             .HasKey(x => new { x.UserId, x.RoleId });
         modelBuilder.Entity<RolePermission>()
             .HasKey(x => new { x.RoleId, x.PermissionId });
+    }
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+        optionsBuilder.AddInterceptors(_interceptor);
     }
 }

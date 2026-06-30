@@ -2,7 +2,7 @@
 
 namespace MiniMES.Api.Endpoints.Users.CreateUser;
 
-public sealed class CreateUserEndpoint : Endpoint<Request, Response>
+public sealed class CreateUserEndpoint : Endpoint<CreateUserRequest, CreateUserResponse>
 {
     private readonly ISender _sender;
 
@@ -17,14 +17,14 @@ public sealed class CreateUserEndpoint : Endpoint<Request, Response>
         //Policies("Users.Create");
         AllowAnonymous();
     }
-    public override async Task HandleAsync(Request req, CancellationToken ct)
+    public override async Task HandleAsync(CreateUserRequest req, CancellationToken ct)
     {
         var result = await _sender.Send(req.ToCommand(), ct);
         if (result.IsFailure)
         {
             throw new Exception(result.Error.Message);
         }
-        await Send.OkAsync(new Response
+        await Send.OkAsync(new CreateUserResponse
         {
             Id = result.Value!,
             UserName = req.UserName

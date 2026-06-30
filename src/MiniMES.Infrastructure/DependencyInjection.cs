@@ -2,6 +2,7 @@ using MiniMES.Application.Common.Interfaces;
 using MiniMES.Application.Common.Security;
 using MiniMES.Infrastructure.Identity;
 using MiniMES.Infrastructure.Persistence;
+using MiniMES.Infrastructure.Persistence.Interceptors;
 using MiniMES.Infrastructure.Security;
 
 namespace MiniMES.Infrastructure;
@@ -28,8 +29,8 @@ public static class DependencyInjection
                 ExpireMinutes = int.Parse(config["Jwt:ExpireMinutes"]!)
             };
         });
-        services.AddHttpContextAccessor();
         services.AddScoped<ICurrentUser, CurrentUser>();
+        services.AddScoped<AppDbCommandInterceptor>();
         return services;
     }
 }

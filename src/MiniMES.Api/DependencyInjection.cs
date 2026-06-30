@@ -1,4 +1,6 @@
 ﻿using MiniMES.Api.Common.Exceptions;
+using MiniMES.Api.Common.Services;
+using MiniMES.Application.Common.Interfaces;
 
 namespace MiniMES.Api;
 
@@ -35,6 +37,8 @@ public static class DependencyInjection
                 policy.RequireRole("Admin");
             });
         });
+        services.AddHttpContextAccessor();
+        services.AddScoped<ICurrentRequestContext, CurrentRequestContext>();
         return services;
     }
 }

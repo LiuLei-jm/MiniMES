@@ -2,7 +2,7 @@
 
 namespace MiniMES.Application.Features.Users.CreateUser;
 
-public class BusinessValidator : AbstractValidator<Command>
+public class BusinessValidator : AbstractValidator<CreateUserCommand>
 {
     private readonly IApplicationDbContext _db;
 

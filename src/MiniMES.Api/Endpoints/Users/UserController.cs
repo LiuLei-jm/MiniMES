@@ -19,7 +19,7 @@ public class UserController : ControllerBase
         _sender = sender;
     }
     [HttpPost]
-    public async Task<IActionResult> Create(Command command)
+    public async Task<IActionResult> Create(CreateUserCommand command)
     {
         var id = await _sender.Send(command);
         return Ok(id);

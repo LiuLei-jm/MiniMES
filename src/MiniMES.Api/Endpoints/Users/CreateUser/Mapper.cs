@@ -5,8 +5,8 @@ namespace MiniMES.Api.Endpoints.Users.CreateUser;
 
 public static class Mapper
 {
-    public static Command ToCommand(this Request request)
+    public static CreateUserCommand ToCommand(this CreateUserRequest request)
     {
-        return request.Adapt<Command>();
+        return request.Adapt<CreateUserCommand>();
     }
 }
