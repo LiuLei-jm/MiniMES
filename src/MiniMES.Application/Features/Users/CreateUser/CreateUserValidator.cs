@@ -2,16 +2,16 @@
 
 namespace MiniMES.Application.Features.Users.CreateUser;
 
-public class BusinessValidator : AbstractValidator<CreateUserCommand>
+public class CreateUserValidator : AbstractValidator<CreateUserCommand>
 {
-    private readonly IApplicationDbContext _db;
+    private readonly IApplicationDbContext _db = default!;
 
-    public BusinessValidator(IApplicationDbContext db)
+    public CreateUserValidator(IApplicationDbContext db)
     {
         _db = db;
     }
 
-    public BusinessValidator()
+    public CreateUserValidator()
     {
         RuleFor(x => x.UserName)
             .NotEmpty()

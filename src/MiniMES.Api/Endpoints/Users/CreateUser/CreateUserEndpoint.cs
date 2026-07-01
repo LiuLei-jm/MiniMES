@@ -1,6 +1,4 @@
-﻿using MediatR;
-
-namespace MiniMES.Api.Endpoints.Users.CreateUser;
+﻿namespace MiniMES.Api.Endpoints.Users.CreateUser;
 
 public sealed class CreateUserEndpoint : Endpoint<CreateUserRequest, CreateUserResponse>
 {
@@ -13,9 +11,15 @@ public sealed class CreateUserEndpoint : Endpoint<CreateUserRequest, CreateUserR
 
     public override void Configure()
     {
-        Post("/users");
+        Post("api/users");
         //Policies("Users.Create");
         AllowAnonymous();
+        Summary(s =>
+        {
+            s.Summary = "创建用户";
+            s.Description = "创建一个新用户";
+            s.Response(200, "创建成功");
+        });
     }
     public override async Task HandleAsync(CreateUserRequest req, CancellationToken ct)
     {

@@ -1,32 +1,30 @@
-﻿using Microsoft.IdentityModel.Tokens;
+﻿using MiniMES.Application.Common.Models;
 using MiniMES.Application.Common.Security;
-using MiniMES.Domain.Entities;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
+using MiniMES.Infrastructure.Identity;
 
-namespace MiniMES.Infrastructure.Identity;
+namespace MiniMES.Infrastructure.Security;
 
 public class JwtTokenGenerator : IJwtTokenGenerator
 {
     private readonly JwtOptions _options;
 
-    public JwtTokenGenerator(JwtOptions options)
+    public JwtTokenGenerator(IOptions<JwtOptions> options)
     {
-        _options = options;
+        _options = options.Value;
     }
-    public async Task<string> GenerateAsync(User user, List<string> roles, List<string> permissions)
+    public  string Generate(JwtUserInfo userInfo)
     {
 
         var claims = new List<Claim>
         {
-            new Claim(JwtRegisteredClaimNames.Sub,user.Id.ToString()),
-            new Claim(JwtRegisteredClaimNames.UniqueName, user.UserName),
-            new Claim("userId", user.Id.ToString())
+            new Claim(JwtRegisteredClaimNames.Sub,userInfo.UserId.ToString()),
+            new Claim(ClaimTypes.Name, userInfo.UserName),
+            new Claim(CustomClaims.UserId, userInfo.UserId.ToString())
         };
-        claims.AddRange(roles.Select(r =>
+        claims.AddRange(userInfo.Roles.Select(r =>
         new Claim(ClaimTypes.Role, r)
         ));
+        claims.AddRange(userInfo.Permissions.Select(p => new Claim(CustomClaims.Permission, p)));
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_options.Key));
         var creds = new SigningCredentials(
             key,
@@ -39,5 +37,10 @@ public class JwtTokenGenerator : IJwtTokenGenerator
             signingCredentials: creds
             );
         return new JwtSecurityTokenHandler().WriteToken(token);
+    }
+
+    public DateTime GetExpireTime()
+    {
+        return DateTime.UtcNow.AddMinutes(_options.ExpireMinutes);
     }
 }

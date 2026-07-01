@@ -1,6 +1,6 @@
 ﻿using MiniMES.Application.Common.Security;
 
-namespace MiniMES.Infrastructure.Identity;
+namespace MiniMES.Infrastructure.Security;
 
 public class PasswordHasher : IPasswordHasher
 {

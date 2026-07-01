@@ -1,4 +1,5 @@
 using MiniMES.Application.Common.Interfaces;
+using MiniMES.Application.Common.Interfaces.Security;
 using MiniMES.Application.Common.Security;
 using MiniMES.Infrastructure.Identity;
 using MiniMES.Infrastructure.Persistence;
@@ -11,26 +12,19 @@ public static class DependencyInjection
 {
     public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddDbContext<AppDbContext>(options =>
+        services.AddScoped<AppDbCommandInterceptor>();
+        services.AddDbContext<AppDbContext>((sp, options) =>
         {
             options.UseSqlServer(configuration.GetConnectionString("Default"));
+            options.AddInterceptors(sp.GetRequiredService<AppDbCommandInterceptor>());
         });
         services.AddScoped<IApplicationDbContext>(sp => sp.GetRequiredService<AppDbContext>());
         services.AddSingleton<IPasswordHasher, PasswordHasher>();
         services.AddSingleton<IJwtTokenGenerator, JwtTokenGenerator>();
-        services.AddSingleton(provider =>
-        {
-            var config = provider.GetRequiredService<IConfiguration>();
-            return new JwtOptions
-            {
-                Issuer = config["Jwt:Issuer"]!,
-                Audience = config["Jwt:Audience"]!,
-                Key = config["Jwt:Key"]!,
-                ExpireMinutes = int.Parse(config["Jwt:ExpireMinutes"]!)
-            };
-        });
+        services.Configure<JwtOptions>(configuration.GetSection(JwtOptions.SectionName));
         services.AddScoped<ICurrentUser, CurrentUser>();
-        services.AddScoped<AppDbCommandInterceptor>();
+        services.AddScoped<ITokenService, JwtTokenService>();
+        services.AddScoped<IUserPermissionService, UserPermissionService>();
         return services;
     }
 }

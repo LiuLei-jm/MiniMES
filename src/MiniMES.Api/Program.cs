@@ -1,6 +1,4 @@
-using Microsoft.Extensions.Options;
 using MiniMES.Api;
-using MiniMES.Api.Common.Exceptions;
 using MiniMES.Api.Common.Middleware;
 using MiniMES.Application;
 using MiniMES.Application.Common.Security;

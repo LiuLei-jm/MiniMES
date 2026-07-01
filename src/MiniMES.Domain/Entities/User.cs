@@ -1,6 +1,8 @@
+using MiniMES.Domain.Common;
+
 namespace MiniMES.Domain.Entities;
 
-public class User
+public class User : BaseEntity
 {
     private User() { }
 
@@ -19,6 +21,7 @@ public class User
     public bool IsActive { get; private set; }
     public DateTime CreatedTime { get; private set; }
 
+    public ICollection<RefreshToken> RefreshTokens = [];
     public void Disable()
     {
         IsActive = false;

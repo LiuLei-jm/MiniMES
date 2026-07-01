@@ -1,0 +1,10 @@
+﻿using MiniMES.Application.Common.Models;
+
+namespace MiniMES.Application.Common.Errors;
+
+public static class UserErrors
+{
+    public static readonly Error UserAlreadyExists = new Error("User.AlreadyExists", "用户名已存在");
+    public static readonly Error UserNotFound = new Error("User.NotFound", "用户不存在");
+    public static readonly Error UserDisabled = new Error("User.Disabled", "用户已被禁用");
+}

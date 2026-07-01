@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
 using MiniMES.Application.Common.Interfaces;
 using MiniMES.Application.Common.Logging;
 
@@ -41,7 +40,7 @@ public sealed class LoggingBehavior<TRequest, TResponse> : IPipelineBehavior<TRe
             });
             return response;
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
             _logger.LogError(ex, "[{TraceId}] Failed {Request}", _context.TraceId, typeof(TRequest).Name);
             throw;

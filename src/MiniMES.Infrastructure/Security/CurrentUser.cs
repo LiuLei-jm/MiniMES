@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
 using MiniMES.Application.Common.Security;
-using System.Security.Claims;
 
 namespace MiniMES.Infrastructure.Security;
 
