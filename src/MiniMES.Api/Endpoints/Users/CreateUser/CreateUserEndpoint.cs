@@ -1,5 +1,8 @@
-﻿namespace MiniMES.Api.Endpoints.Users.CreateUser;
+﻿using MiniMES.Application.Authorization;
 
+namespace MiniMES.Api.Endpoints.Users.CreateUser;
+
+[Permission("users:create")]
 public sealed class CreateUserEndpoint : Endpoint<CreateUserRequest, CreateUserResponse>
 {
     private readonly ISender _sender;
@@ -12,8 +15,7 @@ public sealed class CreateUserEndpoint : Endpoint<CreateUserRequest, CreateUserR
     public override void Configure()
     {
         Post("api/users");
-        //Policies("Users.Create");
-        AllowAnonymous();
+        Policies("permission:users:create");
         Summary(s =>
         {
             s.Summary = "创建用户";

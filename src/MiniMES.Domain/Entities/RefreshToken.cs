@@ -6,10 +6,20 @@ public class RefreshToken : BaseEntity
 {
     public Guid UserId { get; set; }
     public string Token { get; set; } = string.Empty;
+    public DateTime CreatedAt { get; set; }
     public DateTime ExpiresAt { get; set; }
-    public DateTime? REvokedAt { get; set; }
+    public DateTime? RevokedAt { get; set; }
     public string? ReplacedByToken { get; set; }
     public string? CreatedByIp { get; set; }
     public string? RevokedByIp { get; set; }
+    public bool IsRevoked => RevokedAt != null;
+    public bool IsExpired => DateTime.UtcNow >= ExpiresAt;
+    public bool IsActive => !IsExpired && !IsRevoked;
     public User User { get; set; } = default!;
+
+    public void Revoke(string replacedByToken)
+    {
+        RevokedAt = DateTime.UtcNow;
+        ReplacedByToken = replacedByToken; 
+    }
 }

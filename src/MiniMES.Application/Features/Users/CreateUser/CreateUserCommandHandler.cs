@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
+using MiniMES.Application.Authentication.Interfaces;
 using MiniMES.Application.Common.Interfaces;
 using MiniMES.Application.Common.Models;
-using MiniMES.Application.Common.Security;
 using MiniMES.Domain.Entities;
 
 namespace MiniMES.Application.Features.Users.CreateUser;

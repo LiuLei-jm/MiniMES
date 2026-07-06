@@ -1,7 +1,7 @@
 using MiniMES.Api;
 using MiniMES.Api.Common.Middleware;
 using MiniMES.Application;
-using MiniMES.Application.Common.Security;
+using MiniMES.Application.Authentication.Interfaces;
 using MiniMES.Infrastructure;
 using MiniMES.Infrastructure.Persistence;
 using MiniMES.Infrastructure.Persistence.Seed;

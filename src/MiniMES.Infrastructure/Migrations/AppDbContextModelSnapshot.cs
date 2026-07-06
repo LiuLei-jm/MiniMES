@@ -47,17 +47,20 @@ namespace MiniMES.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("CreatedByIp")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("ExpiresAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime?>("REvokedAt")
-                        .HasColumnType("datetime2");
-
                     b.Property<string>("ReplacedByToken")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("RevokedAt")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("RevokedByIp")
                         .HasColumnType("nvarchar(max)");
@@ -117,8 +120,17 @@ namespace MiniMES.Infrastructure.Migrations
                     b.Property<DateTime>("CreatedTime")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("FailedLoginCount")
+                        .HasColumnType("int");
+
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
+
+                    b.Property<DateTime?>("LastLoginAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("LockoutEnd")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("PasswordHash")
                         .IsRequired()

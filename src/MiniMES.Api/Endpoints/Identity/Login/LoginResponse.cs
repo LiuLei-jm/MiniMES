@@ -4,4 +4,5 @@ public sealed class LoginResponse
 {
     public string AccessToken { get; init; } = "";
     public DateTime ExpiresAt { get; init; }
+    public string RefreshToken { get; init; } = "";
 }

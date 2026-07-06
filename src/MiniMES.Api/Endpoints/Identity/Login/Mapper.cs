@@ -1,4 +1,5 @@
-﻿using MiniMES.Application.Features.Identity.Login;
+﻿using MiniMES.Application.Authentication.Models;
+using MiniMES.Application.Features.Identity.Login;
 
 namespace MiniMES.Api.Endpoints.Identity.Login;
 
@@ -12,12 +13,13 @@ internal static class Mapper
              request.Password
         );
     }
-    public static LoginResponse ToResponse(this LoginResult result)
+    public static LoginResponse ToResponse(this AuthenticationResult result)
     {
         return new LoginResponse
         {
             AccessToken = result.AccessToken,
-            ExpiresAt = result.ExpiresAt
+            ExpiresAt = result.ExpiresAt,
+            RefreshToken = result.RefreshToken
         };
     }
 }

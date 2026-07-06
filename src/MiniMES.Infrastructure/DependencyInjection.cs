@@ -1,10 +1,10 @@
+using Microsoft.AspNetCore.Authorization;
+using MiniMES.Application.Authentication.Interfaces;
 using MiniMES.Application.Common.Interfaces;
-using MiniMES.Application.Common.Interfaces.Security;
-using MiniMES.Application.Common.Security;
-using MiniMES.Infrastructure.Identity;
+using MiniMES.Infrastructure.Authentication;
+using MiniMES.Infrastructure.Authorization;
 using MiniMES.Infrastructure.Persistence;
 using MiniMES.Infrastructure.Persistence.Interceptors;
-using MiniMES.Infrastructure.Security;
 
 namespace MiniMES.Infrastructure;
 
@@ -23,8 +23,11 @@ public static class DependencyInjection
         services.AddSingleton<IJwtTokenGenerator, JwtTokenGenerator>();
         services.Configure<JwtOptions>(configuration.GetSection(JwtOptions.SectionName));
         services.AddScoped<ICurrentUser, CurrentUser>();
-        services.AddScoped<ITokenService, JwtTokenService>();
+        services.AddScoped<IAuthenticationService, AuthenticationService>();
         services.AddScoped<IUserPermissionService, UserPermissionService>();
+        services.AddScoped<ILoginAttemptService, LoginAttemptService>();
+        services.AddSingleton<IAuthorizationHandler, PermissionAuthorizationHandler>();
+        services.AddScoped<IRefreshTokenService, RefreshTokenService>();
         return services;
     }
 }
