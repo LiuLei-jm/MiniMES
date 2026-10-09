@@ -293,6 +293,11 @@ FakesAssemblies/
 .ntvs_analysis.dat
 node_modules/
 
+# Local SQLite development database
+*.db
+*.db-shm
+*.db-wal
+
 # Visual Studio 6 build log
 *.plg
 

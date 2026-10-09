@@ -10,4 +10,5 @@ public class Role
         Id = Guid.NewGuid();
         Name = name;
     }
+    public void Rename(string name) => Name = name;
 }

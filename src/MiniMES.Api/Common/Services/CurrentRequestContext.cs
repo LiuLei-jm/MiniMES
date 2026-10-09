@@ -1,17 +1,11 @@
-﻿using MiniMES.Application.Common.Interfaces;
+using MiniMES.Application.Common.Interfaces;
 
 namespace MiniMES.Api.Common.Services;
 
-public class CurrentRequestContext : ICurrentRequestContext
+public sealed class CurrentRequestContext(IHttpContextAccessor accessor) : ICurrentRequestContext
 {
-    private readonly IHttpContextAccessor _accessor;
-
-    public CurrentRequestContext(IHttpContextAccessor accessor)
-    {
-        _accessor = accessor;
-    }
-
-    public string TraceId => _accessor.HttpContext?.TraceIdentifier ?? Guid.NewGuid().ToString("N");
-
-    public string? UserId => _accessor.HttpContext?.User?.Identity?.Name;
+    public string TraceId => accessor.HttpContext?.TraceIdentifier ?? Guid.NewGuid().ToString("N");
+    public string? UserId => accessor.HttpContext?.User?.FindFirst("userId")?.Value;
+    public string? UserName => accessor.HttpContext?.User?.Identity?.Name;
+    public string ClientIp => accessor.HttpContext?.Connection.RemoteIpAddress?.ToString() ?? "unknown";
 }

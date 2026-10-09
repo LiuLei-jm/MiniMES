@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using MiniMES.Application.Authentication.Interfaces;
+using MiniMES.Application.Common.Errors;
 using MiniMES.Application.Common.Interfaces;
 using MiniMES.Application.Common.Models;
 using MiniMES.Domain.Entities;

@@ -1,11 +1,11 @@
-﻿using MiniMES.Domain.Common;
+using MiniMES.Domain.Common;
 
 namespace MiniMES.Domain.Entities;
 
 public class RefreshToken : BaseEntity
 {
     public Guid UserId { get; set; }
-    public string Token { get; set; } = string.Empty;
+    public string TokenHash { get; set; } = string.Empty;
     public DateTime CreatedAt { get; set; }
     public DateTime ExpiresAt { get; set; }
     public DateTime? RevokedAt { get; set; }
@@ -17,9 +17,10 @@ public class RefreshToken : BaseEntity
     public bool IsActive => !IsExpired && !IsRevoked;
     public User User { get; set; } = default!;
 
-    public void Revoke(string replacedByToken)
+    public void Revoke(string replacedByTokenHash, string? revokedByIp = null)
     {
         RevokedAt = DateTime.UtcNow;
-        ReplacedByToken = replacedByToken; 
+        ReplacedByToken = replacedByTokenHash;
+        RevokedByIp = revokedByIp;
     }
 }

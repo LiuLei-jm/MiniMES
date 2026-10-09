@@ -1,5 +1,9 @@
-﻿namespace MiniMES.Application.Features.Identity.Refresh;
+namespace MiniMES.Application.Features.Identity.Refresh;
 
-internal class RefreshTokenCommandValidator
+public sealed class RefreshTokenCommandValidator : AbstractValidator<RefreshTokenCommand>
 {
+    public RefreshTokenCommandValidator()
+    {
+        RuleFor(x => x.RefreshToken).NotEmpty().MaximumLength(512);
+    }
 }

@@ -1,35 +1,24 @@
-﻿using MiniMES.Application.Common.Interfaces;
+using MiniMES.Application.Common.Interfaces;
 
 namespace MiniMES.Application.Features.Users.CreateUser;
 
-public class CreateUserValidator : AbstractValidator<CreateUserCommand>
+public sealed class CreateUserValidator : AbstractValidator<CreateUserCommand>
 {
-    private readonly IApplicationDbContext _db = default!;
+    private readonly IApplicationDbContext _db;
 
     public CreateUserValidator(IApplicationDbContext db)
     {
         _db = db;
-    }
-
-    public CreateUserValidator()
-    {
         RuleFor(x => x.UserName)
             .NotEmpty()
             .MaximumLength(30)
-            .Must(x => x != "admin")
+            .Must(x => !string.Equals(x, "admin", StringComparison.OrdinalIgnoreCase))
             .WithMessage("admin 用户名禁止创建.")
-            .MustAsync(async (x, cancellationToken) =>
-            {
-                return await IsExists(x, cancellationToken);
-            })
+            .MustAsync(IsAvailable)
             .WithMessage("用户名已存在.");
-        RuleFor(x => x.Password)
-            .NotEmpty()
-            .MinimumLength(6);
+        RuleFor(x => x.Password).NotEmpty().MinimumLength(6);
     }
 
-    private async Task<bool> IsExists(string x, CancellationToken cancellationToken)
-    {
-        return await _db.Users.FirstOrDefaultAsync(u => u.UserName == x, cancellationToken) is not null;
-    }
+    private Task<bool> IsAvailable(string userName, CancellationToken cancellationToken) =>
+        _db.Users.AllAsync(u => u.UserName != userName, cancellationToken);
 }

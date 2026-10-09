@@ -1,6 +1,8 @@
-﻿namespace MiniMES.Application.Common.Interfaces;
+using MiniMES.Application.Common.Logging;
+
+namespace MiniMES.Application.Common.Interfaces;
 
 public interface ISecurityAuditService
 {
-    Task LogAsync(string username, string action, bool success);
+    Task LogAsync(AuditEvent auditEvent, CancellationToken cancellationToken = default);
 }

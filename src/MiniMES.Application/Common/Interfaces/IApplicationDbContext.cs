@@ -10,5 +10,6 @@ public interface IApplicationDbContext
     public DbSet<UserRole> UserRoles { get; }
     public DbSet<RolePermission> RolePermissions { get; }
     public DbSet<RefreshToken> RefreshTokens { get; }
+    public DbSet<AuditLog> AuditLogs { get; }
     Task<int> SaveChangesAsync(CancellationToken cancellationToken);
 }

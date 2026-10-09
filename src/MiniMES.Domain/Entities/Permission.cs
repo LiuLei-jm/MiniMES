@@ -12,4 +12,9 @@ public class Permission
         Code = code;
         Description = description;
     }
+    public void Update(string code, string description)
+    {
+        Code = code;
+        Description = description;
+    }
 }

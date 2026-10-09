@@ -19,11 +19,22 @@ public sealed class UserPermissionService : IUserPermissionService
                                join r in _context.Roles on ur.RoleId equals r.Id
                                where ur.UserId == userId
                                select r.Name).Distinct().ToListAsync(cancellationToken);
-        var permissionCodes = await (from ur in _context.UserRoles
+        List<string> permissionCodes;
+        if (roleNames.Contains("Admin", StringComparer.OrdinalIgnoreCase))
+        {
+            permissionCodes = await _context.Permissions
+                .Select(x => x.Code)
+                .Distinct()
+                .ToListAsync(cancellationToken);
+        }
+        else
+        {
+            permissionCodes = await (from ur in _context.UserRoles
                                      join rp in _context.RolePermissions on ur.RoleId equals rp.RoleId
                                      join p in _context.Permissions on rp.PermissionId equals p.Id
                                      where ur.UserId == userId
                                      select p.Code).Distinct().ToListAsync(cancellationToken);
+        }
         return new UserPermissionInfo
         {
             Roles = roleNames,

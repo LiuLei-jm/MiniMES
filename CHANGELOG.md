@@ -85,7 +85,12 @@ Added:
 
 ---
 
-# Sprint 3 (Planned)
+# Sprint 3 - Identity Management
+
+## Completed
+
+* Added Vue management pages and matching Web API endpoints for every Sprint 3 area.
+* Added permission checks and audit recording to identity management mutations.
 
 ## Users
 
@@ -108,6 +113,11 @@ Added:
 * Security Audit
 * Operation Logs
 * Login Logs
+
+## Persistence
+
+* Standardized the active development database on SQLite.
+* Added the audit log model and SQLite schema coverage tests.
 
 ---
 

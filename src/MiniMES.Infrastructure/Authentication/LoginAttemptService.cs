@@ -1,35 +1,26 @@
-﻿using MiniMES.Application.Authentication.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+using Microsoft.Extensions.Caching.Distributed;
+using MiniMES.Application.Authentication.Interfaces;
+using System.Security.Cryptography;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace MiniMES.Infrastructure.Authentication;
 
-public class LoginAttemptService : ILoginAttemptService
+public sealed class LoginAttemptService(IDistributedCache cache) : ILoginAttemptService
 {
-    private readonly Dictionary<string, (int Count, DateTime LastTry)> _cache = new();
-    public bool IsBlocked(string username)
+    private const int MaximumAttempts = 10;
+    private static readonly TimeSpan Window = TimeSpan.FromMinutes(1);
+
+    public async Task<bool> IsBlockedAsync(string username, string clientIp, CancellationToken cancellationToken = default) =>
+        int.TryParse(await cache.GetStringAsync(Key(username, clientIp), cancellationToken), out var count) && count >= MaximumAttempts;
+
+    public async Task RecordFailureAsync(string username, string clientIp, CancellationToken cancellationToken = default)
     {
-        if (!_cache.ContainsKey(username)) return false;
-        var (count, lastTry) = _cache[username];
-        return count >= 10 && lastTry > DateTime.UtcNow.AddMinutes(-1);
+        var key = Key(username, clientIp);
+        var count = int.TryParse(await cache.GetStringAsync(key, cancellationToken), out var existing) ? existing + 1 : 1;
+        await cache.SetStringAsync(key, count.ToString(), new DistributedCacheEntryOptions { AbsoluteExpirationRelativeToNow = Window }, cancellationToken);
     }
 
-    public void RecordFailure(string username)
-    {
-        if (!_cache.ContainsKey(username))
-        {
-            _cache[username] = (1, DateTime.UtcNow);
-            return;
-        }
-        var (count, _) = _cache[username];
-        _cache[username] = (count + 1, DateTime.UtcNow);
-    }
+    public Task ResetAsync(string username, string clientIp, CancellationToken cancellationToken = default) => cache.RemoveAsync(Key(username, clientIp), cancellationToken);
 
-    public void Reset(string username)
-    {
-        _cache.Remove(username);
-    }
+    private static string Key(string username, string clientIp) => $"login-attempt:{Convert.ToHexString(SHA256.HashData(Encoding.UTF8.GetBytes($"{username.Trim().ToUpperInvariant()}:{clientIp}")))}";
 }

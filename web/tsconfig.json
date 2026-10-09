@@ -1,0 +1,9 @@
+{
+  "extends": "@vue/tsconfig/tsconfig.dom.json",
+  "include": ["src/**/*.ts", "src/**/*.vue", "vite.config.ts"],
+  "compilerOptions": {
+    "types": ["vite/client", "element-plus/global"],
+    "noUnusedLocals": true,
+    "noUnusedParameters": true
+  }
+}

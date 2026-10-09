@@ -1,46 +1,30 @@
-﻿using MiniMES.Application.Authentication.Interfaces;
-using MiniMES.Application.Common.Interfaces;
+using Microsoft.Extensions.Options;
+using MiniMES.Application.Authentication.Interfaces;
+using MiniMES.Application.Authentication.Models;
 using MiniMES.Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace MiniMES.Infrastructure.Authentication;
 
-public class RefreshTokenService : IRefreshTokenService
+public sealed class RefreshTokenService(IOptions<JwtOptions> options) : IRefreshTokenService
 {
-    private readonly IApplicationDbContext _context;
+    private readonly JwtOptions _options = options.Value;
 
-    public RefreshTokenService(IApplicationDbContext context)
+    public IssuedRefreshToken Create(Guid userId, string? createdByIp = null)
     {
-        _context = context;
-    }
-    public RefreshToken Create(Guid userId)
-    {
-        return new RefreshToken
+        var bytes = RandomNumberGenerator.GetBytes(64);
+        var token = Convert.ToBase64String(bytes).TrimEnd('=').Replace('+', '-').Replace('/', '_');
+        return new IssuedRefreshToken
         {
-            Id = Guid.NewGuid(),
-            UserId = userId,
-            Token = Guid.NewGuid().ToString("N"),
-            CreatedAt = DateTime.UtcNow,
-            ExpiresAt = DateTime.UtcNow.AddDays(7)
+            Token = token,
+            Entity = new RefreshToken
+            {
+                Id = Guid.NewGuid(), UserId = userId, TokenHash = Hash(token), CreatedAt = DateTime.UtcNow,
+                ExpiresAt = DateTime.UtcNow.AddDays(_options.RefreshTokenExpireDays), CreatedByIp = createdByIp
+            }
         };
     }
-    public async Task<RefreshToken?> GetAsync(string token)
-    {
-        return await _context.RefreshTokens.FirstOrDefaultAsync(x => x.Token == token);
-    }
-    public void Revoke(RefreshToken token, string? replacedBy = null)
-    {
-        token.RevokedAt = DateTime.UtcNow;
-        token.ReplacedByToken = replacedBy;
-    }
 
-    public Task RotateAsync(RefreshToken oldToken, RefreshToken newToken)
-    {
-        oldToken.Revoke(newToken.Token);
-        return Task.CompletedTask;
-    }
+    public string Hash(string token) => Convert.ToHexString(SHA256.HashData(Encoding.UTF8.GetBytes(token)));
 }

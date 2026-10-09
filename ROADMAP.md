@@ -31,7 +31,7 @@ Authentication & Authorization
 
 Status:
 
-🚧 In Progress
+✅ Completed
 
 Goals:
 
@@ -50,22 +50,21 @@ Identity Management
 
 Status:
 
-📅 Planned
+✅ Completed
 
 Modules:
 
 * User Management
 * Role Management
 * Permission Management
-* Organization
-* Department
+* Security Audit
 
 Deliverables:
 
 * User CRUD
 * Role CRUD
 * Permission CRUD
-* Menu Authorization
+* Dynamic Role and Permission Assignment
 * Operation Log
 * Login Log
 * Audit Log
@@ -226,3 +225,5 @@ Long-term Goals
 * AI Assistant
 * Production Scheduling
 * APS Integration
+* Organization and Department Management
+* Menu Authorization

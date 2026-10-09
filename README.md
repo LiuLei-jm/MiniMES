@@ -16,7 +16,7 @@ MiniMES 并不是一个简单的 CRUD 示例，而是按照真实企业项目的
 * .NET 8
 * ASP.NET Core
 * Entity Framework Core
-* SQL Server
+* SQLite
 * MediatR（CQRS）
 * FastEndpoints
 * FluentValidation
@@ -55,7 +55,7 @@ Infrastructure
 
 ---
 
-# 当前已完成（Sprint 2）
+# 当前已完成（Sprint 3）
 
 ## 基础架构
 
@@ -95,11 +95,20 @@ Infrastructure
 
 ---
 
+## 身份管理与审计
+
+* 用户资料、状态及角色分配
+* 角色与动态权限管理
+* 安全、操作及登录审计日志
+* Vue 3 + Element Plus + Pinia 管理后台
+
+---
+
 ## 数据访问
 
 * Entity Framework Core
-* SQL Server
-* Migration
+* SQLite
+* 开发环境模型自动建库
 * DbContext
 * Repository-Free（直接 DbContext）
 
@@ -124,17 +133,6 @@ Infrastructure
 ---
 
 # 后续开发计划
-
-## Sprint 3
-
-* 用户管理
-* 角色管理
-* 权限管理
-* 审计日志
-* 操作日志
-* 登录日志
-
----
 
 ## Sprint 4
 
@@ -191,6 +189,27 @@ MES 核心业务：
 * 统一异常处理
 * 统一日志
 * 统一权限控制
+
+---
+
+# 开发数据库
+
+开发环境默认使用 SQLite，配置位于 `src/MiniMES.Api/appsettings.Development.json`：
+
+```json
+{
+  "DatabaseProvider": "Sqlite",
+  "ConnectionStrings": { "Default": "Data Source=minimes-dev.db" }
+}
+```
+
+首次启动 API 时会自动创建 `minimes-dev.db` 并执行开发种子数据。SQLite 使用模型建库；模型发生变化时，删除该开发库后重新启动即可重建（会清空本地开发数据）。Sprint 3 新增了 `AuditLogs` 表，已有开发库需要按此方式重建。仓库中的旧 SQL Server 迁移仅作为历史文件保留，当前应用配置不会执行它们。
+
+开发和测试环境未配置 `Jwt:Key` 时会在进程启动时生成临时签名密钥，重启后已有访问令牌会失效。生产环境必须通过环境变量 `Jwt__Key` 或其他安全配置源提供至少 32 字节的密钥。
+
+开发数据库首次启动时会创建默认管理员 `admin`，并将一次性密码输出到控制台。若需要固定的本地密码，请在首次启动前设置环境变量 `DataSeed__Admin__Password`；种子逻辑不会覆盖已存在管理员的密码。管理员会自动绑定 `Admin` 角色、加载全部已定义权限，并通过 `system:admin` 权限访问后续新增的权限端点。
+
+开发环境允许 `http://localhost:5173`、`http://127.0.0.1:5173` 以及 Vite Preview 的 `4173` 端口跨域访问 API。其他前端地址可通过 `Cors__AllowedOrigins__0`、`Cors__AllowedOrigins__1` 等环境变量配置。生产环境未配置来源时默认拒绝跨域请求。
 
 ---
 

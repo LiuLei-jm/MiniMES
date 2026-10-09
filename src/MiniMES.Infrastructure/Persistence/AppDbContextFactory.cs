@@ -17,8 +17,7 @@ public sealed class AppDbContextFactory
         var builder =
             new DbContextOptionsBuilder<AppDbContext>();
 
-        builder.UseSqlServer(
-            configuration.GetConnectionString("Default"));
+        DatabaseProvider.Configure(builder, configuration);
 
         return new AppDbContext(builder.Options);
     }

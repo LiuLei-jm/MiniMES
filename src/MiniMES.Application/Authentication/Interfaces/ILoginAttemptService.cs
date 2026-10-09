@@ -1,8 +1,8 @@
-﻿namespace MiniMES.Application.Authentication.Interfaces;
+namespace MiniMES.Application.Authentication.Interfaces;
 
 public interface ILoginAttemptService
 {
-    bool IsBlocked(string username);
-    void RecordFailure(string username);
-    void Reset(string username);
+    Task<bool> IsBlockedAsync(string username, string clientIp, CancellationToken cancellationToken = default);
+    Task RecordFailureAsync(string username, string clientIp, CancellationToken cancellationToken = default);
+    Task ResetAsync(string username, string clientIp, CancellationToken cancellationToken = default);
 }

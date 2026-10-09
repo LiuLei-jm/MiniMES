@@ -28,6 +28,11 @@ public class User : BaseEntity
     {
         IsActive = false;
     }
+    public void Update(string userName, bool isActive)
+    {
+        UserName = userName;
+        IsActive = isActive;
+    }
     public void AddFailedLoginAttempt()
     {
         FailedLoginCount++;
